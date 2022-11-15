@@ -1,29 +1,43 @@
 from notion_client import Client
-from notion_client.helpers import is_full_page
 
 from pprint import pprint
+from props import TOKEN, DB_ID
 
-notion = Client(auth="")
+notion = Client(auth=TOKEN)
 
-list_users_response = notion.users.list()
-# pprint(list_users_response)
+
 # https://www.notion.so/
-# my_page = notion.databases.query(
-#     **{
-#         "database_id": ""
-#
-#     }
-# )
-#
-# for _ in my_page:
-#     pprint(_)
 
-async def name_fun():
-    full_or_partial_pages = await notion.databases.query(
-        database_id=
+def get_all():
+    my_page = notion.databases.query(
+        **{
+            "database_id": DB_ID
+
+        }
     )
 
-    for page in full_or_partial_pages["results"]:
-        if not is_full_page(page):
-            continue
-        print(f"Created at: {page['created_time']}")
+    results = my_page["results"]
+    prods = []
+    for result in results:
+        prods_dict = map_results(result)
+        prods.append(prods_dict)
+    # pprint(prods)
+
+
+def map_results(result):
+    # pprint(result)
+    i = 0
+    prod_id = result["id"]
+    props = result["properties"]["Name"]["title"][i]
+    # name = props
+    pprint(props)
+    return prod_id
+    # name = props["Name"]["title"]["text"]["content"]
+    # return {
+    #     "prod_id": prod_id,
+    #     "name": name
+    #     }
+
+
+if __name__ == "__main__":
+    get_all()
