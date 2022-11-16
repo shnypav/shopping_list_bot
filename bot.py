@@ -11,12 +11,19 @@ notion = Client(auth=TOKEN)
 def get_all():
     my_page = notion.databases.query(
         **{
-            "database_id": DB_ID
+            "database_id": DB_ID,
+            "filter": {
+                "property": "Едим",
+                "has_more": {
+                    "equals": "True"
+                }
+            }
 
         }
     )
 
     results = my_page["results"]
+    pprint(results)
     prods = []
     for result in range(2, len(results)):
         prods_dict = map_results(results[result])
@@ -32,16 +39,36 @@ def map_results(result):
     return {
         "prod_id": prod_id,
         "name": name
-        }
+    }
 
 
 def get_all_to_buy():
     my_page = notion.databases.query(
         **{
             "database_id": DB_ID,
-            "filter": { "property": "Available",
-                        "status": { "equals": "No",
+            "filter": {
+                "and": [
+                    {
+                        "property": "Available",
+                        "status": {
+                            "equals": "No"
                         }
+                    },
+                    {
+                        "or": [
+                            # {
+                            #     "property": "Едим ли",
+                            #     "any": {
+                            #         "is_not_empty": "True"
+                            #     }
+                            # },
+                            {
+                                "property": "Едим",
+                                "is_not_empty": "true"
+                            }
+                        ]
+                    }
+                ]
             }
         }
     )
@@ -55,4 +82,4 @@ def get_all_to_buy():
 
 
 if __name__ == "__main__":
-    get_all_to_buy()
+    get_all()
