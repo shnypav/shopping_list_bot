@@ -12,12 +12,15 @@ def get_all():
     my_page = notion.databases.query(
         **{
             "database_id": DB_ID,
-            "filter": {
-                "property": "Едим",
-                "has_more": {
-                    "equals": "True"
-                }
-            }
+            "filter":
+
+                {"property": "DoWeEat_2",
+                 "formula": {
+                     "checkbox": {
+                         "equals": False
+                     }
+                 }
+                 },
 
         }
     )
@@ -51,20 +54,27 @@ def get_all_to_buy():
                     {
                         "property": "Available",
                         "status": {
-                            "equals": "No"
+                            "equals": "A lot"
                         }
                     },
                     {
                         "or": [
-                            # {
-                            #     "property": "Едим ли",
-                            #     "any": {
-                            #         "is_not_empty": "True"
-                            #     }
-                            # },
+
+                            {"property": "Едим ли",
+                             "rollup": {
+                                 "any":
+                                     {
+                                         "relation": {
+                                             "is_not_empty": True
+                                         }
+                                     }
+                             }
+                             },
                             {
                                 "property": "Едим",
-                                "is_not_empty": "true"
+                                "relation": {
+                                    "is_not_empty": True
+                                }
                             }
                         ]
                     }
@@ -75,7 +85,7 @@ def get_all_to_buy():
 
     results = my_page["results"]
     prods = []
-    for result in range(2, len(results)):
+    for result in range(0, len(results)):
         prods_dict = map_results(results[result])
         prods.append(prods_dict)
     pprint(prods)
