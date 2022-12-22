@@ -17,26 +17,26 @@ def get_all():
                 {"property": "DoWeEat_2",
                  "formula": {
                      "checkbox": {
-                         "equals": False
+                         "equals": True
                      }
                  }
-                 },
-
+            },
         }
     )
 
     results = my_page["results"]
-    pprint(results)
     prods = []
-    for result in range(2, len(results)):
-        prods_dict = map_results(results[result])
-        prods.append(prods_dict)
+    pprint(results)
+    for result in range(0, len(results)):
+        try:
+            prods_dict = map_results(results[result])
+            prods.append(prods_dict)
+        except IndexError as ie:
+            pprint(ie)
     pprint(prods)
 
 
 def map_results(result):
-    # pprint(result)
-    i = []
     prod_id = result["id"]
     name = result["properties"]["Name"]["title"][0]["text"]["content"]
     return {
@@ -59,7 +59,6 @@ def get_all_to_buy():
                     },
                     {
                         "or": [
-
                             {"property": "Едим ли",
                              "rollup": {
                                  "any":
@@ -89,6 +88,12 @@ def get_all_to_buy():
         prods_dict = map_results(results[result])
         prods.append(prods_dict)
     pprint(prods)
+
+
+def filter_results(results):
+    filtered = []
+    for i in results:
+        pass
 
 
 if __name__ == "__main__":
