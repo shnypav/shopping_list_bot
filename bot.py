@@ -27,6 +27,7 @@ def get_all():
     results = my_page["results"]
     prods = []
     pprint(results)
+    pprint("hrllo")
     for result in range(0, len(results)):
         try:
             prods_dict = map_results(results[result])
