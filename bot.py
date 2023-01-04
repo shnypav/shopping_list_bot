@@ -20,7 +20,7 @@ def get_all():
                          "equals": True
                      }
                  }
-            },
+                 },
         }
     )
 
