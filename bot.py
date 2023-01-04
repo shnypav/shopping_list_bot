@@ -6,7 +6,7 @@ from props import TOKEN, DB_ID
 notion = Client(auth=TOKEN)
 
 
-# https://www.notion.so/
+# https://www.notion.so/a
 
 def get_all():
     my_page = notion.databases.query(
